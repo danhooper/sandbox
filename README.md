@@ -21,8 +21,10 @@ vagrant up
 
 ## Running
 
-After Vagrant has finished building the virtual machine, a login box
-should be displayed on console. Login as user "vagrant", password "vagrant" and
+Wait for Vagrant to finish building the virtual machine and return you to a
+prompt. This will take some time; be patient. Once this is done, the
+virtual machine console should change from a text-based login to an
+old-school GUI login. Login as user "vagrant", password "vagrant" and
 the demonstration should start.
 
 Previous scores are displayed for the first 10 seconds. Attract mode
