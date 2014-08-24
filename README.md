@@ -25,6 +25,9 @@ After Vagrant has finished building the virtual machine, a login box
 should be displayed on console. Login as user "vagrant", password "vagrant" and
 the demonstration should start.
 
+Previous scores are displayed for the first 10 seconds. Attract mode
+starts after that.
+
 ## Controls
 
 * `s`: Start Button
