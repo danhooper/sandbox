@@ -1,0 +1,6 @@
+HighScores:
+    - { inits: CLN, score: 5000000 }
+    - { inits: JON, score: 4000000 }
+    - { inits: DAG, score: 3000000 }
+    - { inits: KID, score: 2000000 }
+    - { inits: MCG, score: 1000000 }

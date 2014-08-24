@@ -31,7 +31,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "hashicorp/precise64"
-  config.vm.provision :shell, path: "vagrant/bootstrap"
+  config.vm.provision :shell, path: "vm/bootstrap"
+  config.vm.hostname = "pinball"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -68,7 +69,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   config.vm.provider "virtualbox" do |vb|
       vb.gui = true
-
+      vb.name = "pinball"
+      vb.memory = 1024
+      vb.customize ["modifyvm", :id, "--audio", "coreaudio",
+                    "--audiocontroller", "ac97"]
   #   # Use VBoxManage to customize the VM. For example to change memory:
   #   vb.customize ["modifyvm", :id, "--memory", "1024"]
   end
