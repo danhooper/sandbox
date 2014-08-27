@@ -72,7 +72,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.name = "pinball"
       vb.memory = 1024
       vb.customize ["modifyvm", :id, "--audio", "coreaudio",
-                    "--audiocontroller", "ac97"]
+                    "--audiocontroller", "hda"]
   #   # Use VBoxManage to customize the VM. For example to change memory:
   #   vb.customize ["modifyvm", :id, "--memory", "1024"]
   end
