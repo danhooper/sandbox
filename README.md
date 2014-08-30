@@ -1,4 +1,4 @@
-# pinball
+# p-roc-fun
 
 I'm playing around with the mock
 [P-ROC](http://www.pinballcontrollers.com/index.php/products/p-roc)
