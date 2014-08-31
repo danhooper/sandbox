@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (c) 2014 blackchip.org
+# Copyright (c) 2014 townhallpinball.org
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -24,92 +24,38 @@ set -x
 
 apt-get update
 apt-get install -y \
-    lxde-core \
-    lightdm-gtk-greeter
-apt-get install -y \
-    libusb-dev \
-    libboost-dev \
+    alsa-utils \
     curl \
-    swig \
-    python-dev \
-    libyaml-dev \
+    libboost-dev \
+    libyaml-0-2 \
     python-imaging \
     python-pyglet \
     python-pygame \
     python-yaml \
     python-setuptools \
-    git \
-    cmake \
-    g++ \
-    make
+    swig
 
-curl -L -O 'http://softlayer-dal.dl.sourceforge.net/project/libusb/libusb-0.1%20%28LEGACY%29/0.1.12/libusb-0.1.12.tar.gz'
-tar xf libusb-0.1.12.tar.gz
-( cd libusb-0.1.12 ;
-    ./configure ;
-    make ;
-    make install)
-
-curl -O http://yaml-cpp.googlecode.com/files/yaml-cpp-0.3.0.tar.gz
-tar xf yaml-cpp-0.3.0.tar.gz
-mkdir -p yaml-cpp/build
-( cd yaml-cpp/build ; \
-    cmake .. ; \
-    make ; \
-    make install )
-
-curl -O http://www.intra2net.com/en/developer/libftdi/download/libftdi-0.16.tar.gz
-tar xf libftdi-0.16.tar.gz
-mkdir -p libftdi-0.16/build
-( cd libftdi-0.16/build ; \
-    cmake .. ; \
-    make ; \
-    make install )
-ln -s /usr/local/include/libftdi/ftdi.h /usr/local/include/ftdi.h
-ln -s /usr/local/lib/libftdi.so.1 /usr/local/lib/libftdi1.so
-
-git clone https://github.com/preble/libpinproc.git
-mkdir -p libpinproc/bin
-( cd libpinproc/bin; \
-    cmake -DCMAKE_CXX_FLAGS="-fPIC" -DBUILD_SHARED_LIBS="ON" .. ; \
-    make ; \
-    make install )
-
-git clone https://github.com/preble/pypinproc.git
-( cd pypinproc ; \
-    python setup.py build ; \
-    python setup.py install )
-
-git clone https://github.com/preble/pyprocgame.git
-( cd pyprocgame ; \
-    python setup.py build ; \
-    python setup.py install )
+curl -O http://www.townhallpinball.org/precise64/local-libftdi-0.16_amd64.deb
+curl -O http://www.townhallpinball.org/precise64/local-libpinproc-0.0.0_amd64.deb
+curl -O http://www.townhallpinball.org/precise64/local-libusb-0.1.12_amd64.deb
+curl -O http://www.townhallpinball.org/precise64/local-pypinproc-0.0.0_amd64.deb
+curl -O http://www.townhallpinball.org/precise64/local-pyprocgame-0.0.0_amd64.deb
+curl -O http://www.townhallpinball.org/precise64/local-yaml-cpp-0.3.0_amd64.deb
+dpkg --install *.deb
 
 ldconfig
-mkdir -p /home/vagrant/.pyprocgame
-ln -s /vagrant/config/system.yaml /home/vagrant/.pyprocgame/config.yaml
-cat > /usr/local/bin/pinball <<EOF
+
+amixer -c 0 -- sset Master 100% unmute
+amixer -c 0 -- sset PCM 100% unmute
+aplay /usr/share/sounds/alsa/Front_Center.wav
+aplay /usr/share/sounds/alsa/Noise.wav
+usermod -a -G audio vagrant
+
+mkdir /home/vagrant/.pyprocgame
+cp /vagrant/config/system.yaml /home/vagrant/.pyprocgame/config.yaml
+cat > /usr/local/bin/sandbox <<EOF
 #!/bin/bash
 
-( cd /vagrant; python -m pinball )
+( cd /vagrant ; python -m pinball )
 EOF
-chmod 755 /usr/local/bin/pinball
-
-cat > /home/vagrant/.profile <<EOF
-/usr/local/bin/pinball &
-EOF
-chown vagrant:vagrant /home/vagrant/.profile
-
-service lightdm restart
-
-# Many thanks to https://github.com/GeoffreyPlitt/vagrant-audio
-
-export DEBIAN_FRONTEND=noninteractive
-# ---- OSS AUDIO
-sudo usermod -a -G audio vagrant
-sudo apt-get install -y oss4-base oss4-dkms oss4-source oss4-gtk linux-headers-3.2.0-23 debconf-utils
-sudo ln -s /usr/src/linux-headers-$(uname -r)/ /lib/modules/$(uname -r)/source || echo ALREADY SYMLINKED
-sudo module-assistant prepare
-sudo module-assistant auto-install -i oss4 # this can take 2 minutes
-sudo debconf-set-selections <<< "linux-sound-base linux-sound-base/sound_system select  OSS"
-echo READY.
+chmod 755 /usr/local/bin/sandbox
