@@ -1,6 +1,6 @@
-# p-roc-fun
+# sandbox
 
-I'm playing around with the mock
+Playing around with the mock
 [P-ROC](http://www.pinballcontrollers.com/index.php/products/p-roc)
 provided by
 [pyprocgame](https://github.com/preble/pyprocgame)
@@ -10,10 +10,11 @@ and friends.
 
 * [VirtualBox](https://www.virtualbox.org/)
 * [Vagrant](https://www.vagrantup.com/)
+* X11, [Mac OS X](http://xquartz.macosforge.org/trac/wiki)
 
 ## Installation
 
-Clone this repository, change to the `pinball` directory and run:
+Clone this repository, change to the `sandbox` directory and run:
 
 ```
 vagrant up
@@ -22,10 +23,12 @@ vagrant up
 ## Running
 
 Wait for Vagrant to finish building the virtual machine and return you to a
-prompt. This will take some time; be patient. Once this is done, the
-virtual machine console should change from a text-based login to an
-old-school GUI login. Login as user "vagrant", password "vagrant" and
-the demonstration should start.
+prompt. Run:
+
+```
+vagrant ssh
+sandbox
+```
 
 Previous scores are displayed for the first 10 seconds. Attract mode
 starts after that.
