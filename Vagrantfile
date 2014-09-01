@@ -33,7 +33,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider "virtualbox" do |vb|
       vb.name = "sandbox"
       #vb.memory = 1024
-      vb.customize ["modifyvm", :id, "--audio", "coreaudio",
-                    "--audiocontroller", "ac97"]
+      if Vagrant::Util::Platform.windows?
+          vb.customize ["modifyvm", :id, "--audio", "dsound",
+                        "--audiocontroller", "ac97"]
+      else
+          vb.customize ["modifyvm", :id, "--audio", "coreaudio",
+                        "--audiocontroller", "ac97"]
+      end
+      
   end
 end
